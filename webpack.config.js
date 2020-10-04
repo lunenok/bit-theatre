@@ -2,6 +2,7 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const { loader } = require("mini-css-extract-plugin");
 
 module.exports = {
   entry: `./source/index.js`,
@@ -19,7 +20,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.(scss)$/,
+        test: /\.((s)css)$/,
         use: [{
           loader: MiniCssExtractPlugin.loader,
           options: {
@@ -48,6 +49,10 @@ module.exports = {
           name: "[name].[ext]",
           outputPath: "fonts/"
         },
+      },
+      {
+        test: /\.(png|jpg|jpeg)$/,
+        loader: 'url-loader',
       }
     ],
   },
@@ -56,11 +61,11 @@ module.exports = {
       template: __dirname + "/source/index.html",
       inject: "body",
     }),
-    // new CopyWebpackPlugin({
-    //   patterns: [
-    //     { from: "./source/images", to: "images" },
-    //   ],
-    // }),
+    new CopyWebpackPlugin({
+      patterns: [
+        { from: "./source/images", to: "images" },
+      ],
+    }),
     new MiniCssExtractPlugin()
   ],
 };
